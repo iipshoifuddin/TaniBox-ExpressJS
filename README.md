@@ -9,6 +9,214 @@ before installing this application, first install Node JS
 
 _https://nodejs.org/en/download/
 
+second create tables in your database like this :
+```PHP
+
+CREATE TABLE `buyer` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `province` varchar(5) DEFAULT '',
+  `province_name` varchar(45) DEFAULT '',
+  `city` varchar(5) DEFAULT '',
+  `city_name` varchar(45) DEFAULT '',
+  `kecamatan` varchar(45) DEFAULT '',
+  `address` varchar(50) DEFAULT '',
+  `postal_code` varchar(6) DEFAULT '',
+  `phone` varchar(15) DEFAULT '',
+  `photo` varchar(50) DEFAULT NULL,
+  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `date_updated` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
+
+
+CREATE TABLE `cart` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `unit_price` int(11) NOT NULL,
+  `qty` int(11) NOT NULL,
+  `total` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_updated` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+
+
+CREATE TABLE `category` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+
+
+CREATE TABLE `notifications` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `receive_id` int(11) DEFAULT NULL,
+  `sender_id` int(11) DEFAULT NULL,
+  `message` text,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+CREATE TABLE `payment` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_transaction` varchar(255) NOT NULL,
+  `va_number` varchar(255) DEFAULT NULL,
+  `bank` varchar(255) DEFAULT NULL,
+  `transaction_time` varchar(255) DEFAULT NULL,
+  `transaction_status` varchar(255) DEFAULT NULL,
+  `transaction_id` varchar(255) DEFAULT NULL,
+  `status_message` varchar(255) DEFAULT NULL,
+  `status_code` varchar(255) DEFAULT NULL,
+  `signature_key` text,
+  `settlement_time` varchar(255) DEFAULT NULL,
+  `payment_type` varchar(255) DEFAULT NULL,
+  `merchant_id` varchar(255) DEFAULT NULL,
+  `gross_amount` varchar(255) DEFAULT NULL,
+  `fraud_status` varchar(255) DEFAULT NULL,
+  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `date_updated` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+
+
+CREATE TABLE `photo_product` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `photo` varchar(255) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4;
+
+
+CREATE TABLE `products` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `unit` int(11) DEFAULT NULL,
+  `price` int(11) DEFAULT NULL,
+  `stock` int(11) DEFAULT NULL,
+  `description` text,
+  `category_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4;
+
+
+CREATE TABLE `seller` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `name_of_store` varchar(45) DEFAULT '',
+  `address1` varchar(50) DEFAULT '',
+  `province1` varchar(45) DEFAULT '',
+  `province1_name` varchar(45) DEFAULT '',
+  `city1` varchar(45) DEFAULT '',
+  `city1_name` varchar(45) DEFAULT '',
+  `kecamatan1` varchar(45) DEFAULT '',
+  `postal_code1` varchar(6) DEFAULT '',
+  `address2` varchar(50) DEFAULT '',
+  `province2` varchar(45) DEFAULT '',
+  `province2_name` varchar(45) DEFAULT '',
+  `city2` varchar(45) DEFAULT '',
+  `city2_name` varchar(45) DEFAULT '',
+  `kecamatan2` varchar(45) DEFAULT '',
+  `postal_code2` varchar(6) DEFAULT '',
+  `phone` varchar(12) DEFAULT '',
+  `photo_profile` varchar(50) DEFAULT '',
+  `photo_store` varchar(50) DEFAULT '',
+  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `date_updated` timestamp NULL DEFAULT NULL,
+  `description` text,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+
+
+CREATE TABLE `transaction` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `seller_user_id` int(11) NOT NULL,
+  `buyer_user_id` int(11) DEFAULT NULL,
+  `invoice` varchar(200) NOT NULL,
+  `shipment_amount` int(11) NOT NULL,
+  `transaction_amount` int(11) NOT NULL,
+  `total_amount` int(11) NOT NULL,
+  `status` varchar(10) DEFAULT NULL,
+  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+CREATE TABLE `transaction_detail` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_transaction` int(11) NOT NULL,
+  `id_product` int(11) NOT NULL,
+  `qty` int(11) NOT NULL,
+  `price` int(11) NOT NULL,
+  `total_price` int(11) NOT NULL,
+  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `date_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+CREATE TABLE `transaction_shipment` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_transaction` int(11) DEFAULT NULL,
+  `seller_address` varchar(45) DEFAULT NULL,
+  `seller_kecamatan` varchar(45) DEFAULT NULL,
+  `seller_postal_code` varchar(6) DEFAULT NULL,
+  `seller_province` varchar(5) DEFAULT NULL,
+  `seller_province_name` varchar(45) DEFAULT NULL,
+  `seller_city` varchar(5) DEFAULT NULL,
+  `seller_city_name` varchar(45) DEFAULT NULL,
+  `buyer_address` varchar(45) DEFAULT NULL,
+  `buyer_kecamatan` varchar(45) DEFAULT NULL,
+  `buyer_postal_code` varchar(6) DEFAULT NULL,
+  `buyer_province` varchar(5) DEFAULT NULL,
+  `buyer_province_name` varchar(45) DEFAULT NULL,
+  `buyer_city` varchar(5) DEFAULT NULL,
+  `buyer_city_name` varchar(45) DEFAULT NULL,
+  `courier` varchar(5) DEFAULT NULL,
+  `courier_service` varchar(5) DEFAULT NULL,
+  `weight` int(11) DEFAULT NULL,
+  `shipment_amount` int(11) NOT NULL,
+  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `date_updated` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `password` varchar(100) DEFAULT NULL,
+  `role` varchar(100) DEFAULT NULL,
+  `OTP` int(11) DEFAULT NULL,
+  `date_created` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_updated` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=latin1;
+
+
+CREATE TABLE `wishlist` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `product_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `date_created` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4;
+
+
+```
+
+
 ## Installation
 
 OS X & Linux & Windows:
@@ -20,7 +228,6 @@ npm init
 ```sh
 npm install
 ```
-
 
 ## Development setup
 
